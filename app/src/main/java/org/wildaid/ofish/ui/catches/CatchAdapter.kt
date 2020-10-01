@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.wildaid.ofish.R
+import org.wildaid.ofish.data.OTHER
 import org.wildaid.ofish.databinding.ItemEditCatchBinding
 import org.wildaid.ofish.ui.base.AdapterDiffCallback
 import org.wildaid.ofish.ui.base.PhotoItem
@@ -75,8 +76,9 @@ class CatchAdapter(
 
             catchEditBinding.catchEditGroup.setVisible(editVisible)
             catchEditBinding.catchNoteLayout.setVisible(editVisible && item.attachmentItem.hasNotes())
-            catchEditBinding.catchEditGroupWeight.setVisible( editVisible)
+            catchEditBinding.catchEditGroupWeight.setVisible(editVisible)
             catchEditBinding.countEditLayout.setVisible(editVisible)
+            catchEditBinding.catchDescriptionTextLayout.setVisible(editVisible && currentItem.catch.fish == OTHER)
 
             catchEditBinding.catchEditPhotos.onPhotoClickListener =
                 catchOnPhotoClickListener::invoke

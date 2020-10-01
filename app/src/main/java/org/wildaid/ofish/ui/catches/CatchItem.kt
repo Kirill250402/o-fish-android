@@ -7,5 +7,6 @@ data class CatchItem(
     var catch: Catch,
     var title: String,
     var inEditMode: Boolean,
-    var attachmentItem: AttachmentItem
+    var attachmentItem: AttachmentItem,
+    var descriptionFiled: String? = null
 )
