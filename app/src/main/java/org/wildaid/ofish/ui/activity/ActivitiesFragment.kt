@@ -1,6 +1,8 @@
 package org.wildaid.ofish.ui.activity
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -11,6 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_activities.*
 import org.wildaid.ofish.EventObserver
 import org.wildaid.ofish.R
+import org.wildaid.ofish.data.OTHER
 import org.wildaid.ofish.databinding.FragmentActivitiesBinding
 import org.wildaid.ofish.ui.base.BaseReportFragment
 import org.wildaid.ofish.ui.search.base.BaseSearchFragment
@@ -71,16 +74,21 @@ class ActivitiesFragment : BaseReportFragment(R.layout.fragment_activities) {
             EventObserver(::handleUserEvent)
         )
 
+        descriptionConverter()
+
         fragmentViewModel.activityItemLiveData.observe(viewLifecycleOwner, Observer {
             fragmentDataBinding.activitiesNoteLayout.setVisible(it.attachments.hasNotes())
+            fragmentDataBinding.activityDescriptionTextLayout.setVisible(it.activity.name == OTHER)
         })
 
         fragmentViewModel.fisheryItemLiveData.observe(viewLifecycleOwner, Observer {
             fragmentDataBinding.activitiesFisheryNoteLayout.setVisible(it.attachments.hasNotes())
+            fragmentDataBinding.fisheryDescriptionTextLayout.setVisible(it.fishery.name == OTHER)
         })
 
         fragmentViewModel.gearItemLiveData.observe(viewLifecycleOwner, Observer {
             fragmentDataBinding.activityGearNoteLayout.setVisible(it.attachments.hasNotes())
+            fragmentDataBinding.gearDescriptionTextLayout.setVisible(it.gear.name == OTHER)
         })
 
         fragmentDataBinding.activitiesPhotosLayout.onPhotoClickListener = ::showFullImage
@@ -93,6 +101,51 @@ class ActivitiesFragment : BaseReportFragment(R.layout.fragment_activities) {
             fragmentViewModel::removePhotoFromFishery
         fragmentDataBinding.gearPhotosLayout.onPhotoRemoveListener =
             fragmentViewModel::removePhotoFromGear
+    }
+
+    private fun descriptionConverter() {
+        activity_description_edit_text.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrEmpty()) {
+                    fragmentViewModel.updateActivityIfOtherSelected()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+        species_description_edit_text.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrBlank()){
+                    fragmentViewModel.updateSpeciesIfOtherSelected()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+        gear_description_edit_text.addTextChangedListener(object:TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrBlank()){
+                    fragmentViewModel.updateGearIfOtherSelected()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
     private fun handleUserEvent(event: ActivitiesViewModel.ActivitiesUserEvent) {

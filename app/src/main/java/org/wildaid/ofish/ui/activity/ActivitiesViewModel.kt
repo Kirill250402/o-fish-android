@@ -40,28 +40,46 @@ class ActivitiesViewModel(
         super.initViewModel(report, currentReportPhotos)
 
         report.inspection?.activity?.let {
-            currentActivityItem = ActivityItem(it, AttachmentItem(
-                it.attachments!!,
-                getPhotoItemsForIds(it.attachments!!.photoIDs)
-            ))
+            currentActivityItem = ActivityItem(
+                it, AttachmentItem(
+                    it.attachments!!,
+                    getPhotoItemsForIds(it.attachments!!.photoIDs)
+                )
+            )
             _activityItemLiveData.postValue(currentActivityItem)
         }
 
         report.inspection?.fishery?.let {
-            currentFisheryItem = FisheryItem(it, AttachmentItem(
-                it.attachments!!,
-                getPhotoItemsForIds(it.attachments!!.photoIDs)
-            ))
+            currentFisheryItem = FisheryItem(
+                it, AttachmentItem(
+                    it.attachments!!,
+                    getPhotoItemsForIds(it.attachments!!.photoIDs)
+                )
+            )
             _fisheryItemLiveData.postValue(currentFisheryItem)
         }
 
         report.inspection?.gearType?.let {
-            currentGearItem = GearItem(it, AttachmentItem(
-                it.attachments!!,
-                getPhotoItemsForIds(it.attachments!!.photoIDs)
-            ))
+            currentGearItem = GearItem(
+                it, AttachmentItem(
+                    it.attachments!!,
+                    getPhotoItemsForIds(it.attachments!!.photoIDs)
+                )
+            )
             _gearItemLiveData.postValue(currentGearItem)
         }
+    }
+
+    fun updateActivityIfOtherSelected() {
+        currentActivityItem.activity.name = currentActivityItem.descriptionField.orEmpty()
+    }
+
+    fun updateSpeciesIfOtherSelected(){
+        currentFisheryItem.fishery.name = currentFisheryItem.descriptionField.orEmpty()
+    }
+
+    fun updateGearIfOtherSelected(){
+        currentGearItem.gear.name = currentGearItem.descriptionField.orEmpty()
     }
 
     fun updateActivity(activity: String) {

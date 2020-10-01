@@ -7,15 +7,18 @@ import org.wildaid.ofish.ui.base.AttachmentItem
 
 data class ActivityItem(
     val activity: Activity,
-    val attachments: AttachmentItem
+    val attachments: AttachmentItem,
+    var descriptionField: String? = null
 )
 
 data class FisheryItem(
     val fishery: Fishery,
-    val attachments: AttachmentItem
+    val attachments: AttachmentItem,
+    var descriptionField: String? = null
 )
 
 data class GearItem(
     val gear: GearType,
-    val attachments: AttachmentItem
+    val attachments: AttachmentItem,
+    var descriptionField: String? = null
 )
